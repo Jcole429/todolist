@@ -12,9 +12,11 @@
     <h1 style="color: purple">It's a <%= kindOfDay %>!</h1>
 
     <ul>
-        <li>Buy Food</li>
-        <li>Cook Food</li>
-        <li>Eat Food</li>
+        <% for (i=0; i<newListItems.length; i++) { %>
+            <li>
+                <%=newListItems[i]%>
+            </li>
+            <%}%>
     </ul>
 
     <form action="/" method="post">

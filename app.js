@@ -6,6 +6,8 @@ const PORT = 3000;
 
 const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
+var items = ["Buy food", "Cook food", "Eat food"];
+
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -18,11 +20,12 @@ app.get("/", (req, res) => {
 
     var currentDay = today.toLocaleDateString("en-US", dateOptions);
 
-    res.render("list", { kindOfDay: currentDay });
+    res.render("list", { kindOfDay: currentDay, newListItems: items });
 });
 
 app.post("/", (req, res) => {
-    res.send(req.body.newItem);
+    items.push(req.body.newItem);
+    res.redirect("/");
 });
 
 app.listen(PORT, () => {
