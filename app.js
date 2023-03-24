@@ -10,9 +10,14 @@ app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
     var today = new Date();
-    var currentDay = today.getDay();
 
-    res.render("list", { kindOfDay: weekdayNames[currentDay] });
+    var dateOptions = {
+        weekday: "long",
+    };
+
+    var currentDay = today.toLocaleDateString("en-US", dateOptions);
+
+    res.render("list", { kindOfDay: currentDay });
 });
 
 app.listen(PORT, () => {
