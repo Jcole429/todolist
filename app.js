@@ -6,19 +6,19 @@ const PORT = 3000;
 
 const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-var items = ["Buy food", "Cook food", "Eat food"];
+let items = ["Buy food", "Cook food", "Eat food"];
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-    var today = new Date();
+    let today = new Date();
 
-    var dateOptions = {
+    let dateOptions = {
         weekday: "long",
     };
 
-    var currentDay = today.toLocaleDateString("en-US", dateOptions);
+    let currentDay = today.toLocaleDateString("en-US", dateOptions);
 
     res.render("list", { kindOfDay: currentDay, newListItems: items });
 });
