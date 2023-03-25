@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 
     let currentDay = today.toLocaleDateString("en-US", dateOptions);
 
-    res.render("list", { kindOfDay: currentDay, newListItems: items });
+    res.render("list", { listTitle: currentDay, newListItems: items });
 });
 
 app.post("/", (req, res) => {
@@ -31,4 +31,4 @@ app.post("/", (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
-});
+}); 
