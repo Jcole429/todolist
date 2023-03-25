@@ -7,21 +7,21 @@ const PORT = 3000;
 
 const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-let items = ["Buy food", "Cook food", "Eat food"];
-let workItems = []
+const items = ["Buy food", "Cook food", "Eat food"];
+const workItems = []
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-    let currentDay = date.getCurrentDay();
+    const currentDay = date.getCurrentDay();
     res.render("list", { listTitle: currentDay, newListItems: items });
 });
 
 app.post("/", (req, res) => {
     console.log(req.body);
-    let item = req.body.newItem;
+    const item = req.body.newItem;
     if (req.body.list === "Work List") {
         workItems.push(item);
         res.redirect("/work");
