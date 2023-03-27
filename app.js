@@ -26,12 +26,6 @@ const Item = mongoose.model("Item", itemsSchema);
 
 const List = mongoose.model("List", listSchema);
 
-const defaultItem1 = new Item({ name: "Do homework" });
-const defaultItem2 = new Item({ name: "Read book" });
-const defaultItem3 = new Item({ name: "Do laundry" });
-
-const defaultItems = [defaultItem1, defaultItem2, defaultItem3];
-
 const defaultListName = "To Do"; // Default list
 
 app.get("/", (req, res) => {
