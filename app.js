@@ -16,7 +16,14 @@ const itemsSchema = {
     name: String
 };
 
+const listSchema = {
+    name: String,
+    items: [itemsSchema]
+};
+
 const Item = mongoose.model("Item", itemsSchema);
+
+const List = mongoose.model("List", listSchema);
 
 const defaultItem1 = new Item({ name: "Do homework" });
 const defaultItem2 = new Item({ name: "Read book" });
@@ -24,26 +31,49 @@ const defaultItem3 = new Item({ name: "Do laundry" });
 
 const defaultItems = [defaultItem1, defaultItem2, defaultItem3];
 
-const workItems = []
+const defaultListName = "To Do"; // Default list
 
 app.get("/", (req, res) => {
-    const currentDay = date.getCurrentDay();
-    Item.find().then((items) => {
-        if (items.length == 0) {
-            Item.insertMany(defaultItems);
+    List.findOne({ name: defaultListName }).then((foundList) => {
+        if (foundList === null) { // List does not exist
+            console.log("List not found: " + defaultListName);
+
+            const list = new List({
+                name: defaultListName
+            });
+
+            list.save();
+
             res.redirect("/");
+
+        } else { // List exists
+            res.render("list", { listTitle: foundList.name, listItems: foundList.items });
         }
-        res.render("list", { listTitle: "To Do", listItems: items });
-    }).catch((err) => {
-        console.log(err);
     });
 });
 
 app.post("/", (req, res) => {
+    console.log(req.body);
     const newItemName = req.body.newItem;
+    const listName = req.body.list;
+
     const newItem = new Item({ name: newItemName });
-    newItem.save();
-    res.redirect("/");
+
+    List.findOne({ name: listName }).then((foundList) => {
+        if (foundList == null) { // List does not exist
+            console.log("List does not exist:" + listName);
+        } else {
+            foundList.items.push(newItem);
+            foundList.save();
+
+            if (listName === defaultListName) {
+                res.redirect("/");
+            } else {
+                res.redirect("/list/" + listName);
+            }
+        }
+    });
+    // }
 });
 
 app.post("/delete", (req, res) => {
@@ -56,8 +86,26 @@ app.post("/delete", (req, res) => {
     res.redirect("/");
 });
 
-app.get("/work", (req, res) => {
-    res.render("list", { listTitle: "Work List", newListItems: workItems });
+app.get("/list/:listName", (req, res) => {
+    const listName = req.params.listName;
+
+    List.findOne({ name: listName }).then((foundList) => {
+        if (foundList === null) { // List does not exist
+            console.log("List not found: " + listName);
+
+            const list = new List({
+                name: listName
+            });
+
+            list.save();
+
+            res.redirect("/list/" + listName);
+
+        } else { // List exists
+            console.log("Found list: " + listName);
+            res.render("list", { listTitle: foundList.name, listItems: foundList.items });
+        }
+    });
 });
 
 app.get("/about", (req, res) => {
