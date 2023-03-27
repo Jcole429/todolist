@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
     Item.find().then((items) => {
         if (items.length == 0) {
             Item.insertMany(defaultItems);
+            res.redirect("/");
         }
         res.render("list", { listTitle: "To Do", listItems: items });
     }).catch((err) => {
