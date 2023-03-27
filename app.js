@@ -6,14 +6,14 @@ const date = require(__dirname + "/date.js");
 const app = express();
 const PORT = 3000;
 
+app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
 const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 const items = ["Buy food", "Cook food", "Eat food"];
 const workItems = []
-
-app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
 
 app.get("/", (req, res) => {
     const currentDay = date.getCurrentDay();
