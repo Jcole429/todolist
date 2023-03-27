@@ -24,14 +24,14 @@ const defaultItem3 = new Item({ name: "Do laundry" });
 
 const defaultItems = [defaultItem1, defaultItem2, defaultItem3];
 
-Item.insertMany(defaultItems);
-
 const workItems = []
 
 app.get("/", (req, res) => {
     const currentDay = date.getCurrentDay();
     Item.find().then((items) => {
-        console.log("Items: " + items);
+        if (items.length == 0) {
+            Item.insertMany(defaultItems);
+        }
         res.render("list", { listTitle: "To Do", listItems: items });
     }).catch((err) => {
         console.log(err);
