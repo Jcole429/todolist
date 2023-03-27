@@ -46,6 +46,16 @@ app.post("/", (req, res) => {
     res.redirect("/");
 });
 
+app.post("/delete", (req, res) => {
+    const itemId = req.body.itemId
+    Item.deleteOne({ _id: itemId }).then(() => {
+        console.log("Deleted: " + itemId);
+    }).catch((error) => {
+        console.log(error);
+    });
+    res.redirect("/");
+});
+
 app.get("/work", (req, res) => {
     res.render("list", { listTitle: "Work List", newListItems: workItems });
 });

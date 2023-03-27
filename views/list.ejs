@@ -7,15 +7,16 @@
     <div class="box">
 
         <% listItems.forEach((item)=> { %>
-            <form action="/delete" method="post">
-                <div class="item">
-                    <input type="checkbox">
-                    <p class="spacer">
-                        <%=item.name%>
-                    </p>
+            <div class="item">
+                <input type="checkbox">
+                <p class="spacer">
+                    <%=item.name%>
+                </p>
+                <form action="/delete" method="post">
+                    <input type="hidden" name="itemId" value=<%=item.id%>>
                     <button type="submit" class="delete-item-button"><i class="gg-trash"></i></button>
-                </div>
-            </form>
+                </form>
+            </div>
             <%});%>
                 <form class="item" action="/" method="post">
                     <input type="text" name="newItem" placeholder="New Item" autocomplete="off" class="spacer">
