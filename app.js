@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
     const currentDay = date.getCurrentDay();
     Item.find().then((items) => {
         console.log("Items: " + items);
-        res.render("list", { listTitle: "To Do", newListItems: items });
+        res.render("list", { listTitle: "To Do", listItems: items });
     }).catch((err) => {
         console.log(err);
     });
