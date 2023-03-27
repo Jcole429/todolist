@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const _ = require("lodash");
 const date = require(__dirname + "/date.js");
 
 const app = express();
@@ -95,7 +96,7 @@ app.post("/delete", (req, res) => {
 
 app.get("/list/:listName", (req, res) => {
     console.log(req.params);
-    const listName = req.params.listName;
+    const listName = _.capitalize(req.params.listName);
 
     List.findOne({ name: listName }).then((foundList) => {
         if (foundList === null) { // List does not exist
