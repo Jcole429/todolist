@@ -14,6 +14,7 @@
                 </p>
                 <form action="/delete" method="post">
                     <input type="hidden" name="itemId" value=<%=item.id%>>
+                    <input type="hidden" name="listId" value=<%=listId%>>
                     <button type="submit" class="delete-item-button"><i class="gg-trash"></i></button>
                 </form>
             </div>

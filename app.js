@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
             res.redirect("/");
 
         } else { // List exists
-            res.render("list", { listTitle: foundList.name, listItems: foundList.items });
+            res.render("list", { listTitle: foundList.name, listItems: foundList.items, listId: foundList._id });
         }
     });
 });
@@ -77,16 +77,24 @@ app.post("/", (req, res) => {
 });
 
 app.post("/delete", (req, res) => {
+    console.log(req.body);
     const itemId = req.body.itemId
-    Item.deleteOne({ _id: itemId }).then(() => {
-        console.log("Deleted: " + itemId);
+    const listId = req.body.listId
+
+    List.findOneAndUpdate({ _id: listId }, { $pull: { items: { _id: itemId } } }).then((foundList) => {
+        console.log("foundList: " + foundList);
+        if (foundList.name === defaultListName) {
+            res.redirect("/");
+        } else {
+            res.redirect("/list/" + foundList.name);
+        }
     }).catch((error) => {
         console.log(error);
     });
-    res.redirect("/");
 });
 
 app.get("/list/:listName", (req, res) => {
+    console.log(req.params);
     const listName = req.params.listName;
 
     List.findOne({ name: listName }).then((foundList) => {
@@ -103,7 +111,7 @@ app.get("/list/:listName", (req, res) => {
 
         } else { // List exists
             console.log("Found list: " + listName);
-            res.render("list", { listTitle: foundList.name, listItems: foundList.items });
+            res.render("list", { listTitle: foundList.name, listItems: foundList.items, listId: foundList._id });
         }
     });
 });
