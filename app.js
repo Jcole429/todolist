@@ -40,15 +40,10 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-    console.log(req.body);
-    const item = req.body.newItem;
-    if (req.body.list === "Work List") {
-        workItems.push(item);
-        res.redirect("/work");
-    } else {
-        items.push(item);
-        res.redirect("/");
-    }
+    const newItemName = req.body.newItem;
+    const newItem = new Item({ name: newItemName });
+    newItem.save();
+    res.redirect("/");
 });
 
 app.get("/work", (req, res) => {
