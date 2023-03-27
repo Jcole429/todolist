@@ -10,14 +10,32 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+mongoose.connect("mongodb://localhost:27017/todolistDB");
 
-const items = ["Buy food", "Cook food", "Eat food"];
+const itemsSchema = {
+    name: String
+};
+
+const Item = mongoose.model("Item", itemsSchema);
+
+const defaultItem1 = new Item({ name: "Do homework" });
+const defaultItem2 = new Item({ name: "Read book" });
+const defaultItem3 = new Item({ name: "Do laundry" });
+
+const defaultItems = [defaultItem1, defaultItem2, defaultItem3];
+
+Item.insertMany(defaultItems);
+
 const workItems = []
 
 app.get("/", (req, res) => {
     const currentDay = date.getCurrentDay();
-    res.render("list", { listTitle: currentDay, newListItems: items });
+    Item.find().then((items) => {
+        console.log("Items: " + items);
+        res.render("list", { listTitle: "To Do", newListItems: items });
+    }).catch((err) => {
+        console.log(err);
+    });
 });
 
 app.post("/", (req, res) => {
@@ -42,4 +60,4 @@ app.get("/about", (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
-}); 
+});
